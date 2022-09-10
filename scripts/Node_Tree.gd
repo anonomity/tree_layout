@@ -31,6 +31,24 @@ func _init(_row, _val, _parent):
 	GlobalTreeVariable.init_rows(_row)
 
 
+func inc_sibling_prelim_x():
+	if x_val == 0:
+		return
+	else:
+		
+		for i in range(parent.children.size()):
+			if val == parent.children[i].val:
+				print("done ", parent.children[i].val ,", == ", val)
+				return
+			else:
+				print(parent.children[i].val, " has x val of ", parent.children[i].x_val)
+				print("inc ", val, " by ",parent.children[i].x_val, " with parent ", parent.val)
+#				print("sibling ", children[i].val, " inc ", children[i].x_val)
+				x_val += parent.children[i].x_val
+	
+func inc_x_prelim(ind):
+	print(val, "by ", ind)
+	x_val += ind		
 
 func mod_with_account_of_children():
 	for child in children:
@@ -47,8 +65,9 @@ func mod_children(mod_num):
 	
 func add_node(instance : Node_Tree):
 	
-	var new_row = GlobalTreeVariable.inc_row(instance.row)
 	instance.x_val = GlobalTreeVariable.rows[instance.row]
+	var new_row = GlobalTreeVariable.inc_row(instance.row)
+	
 	
 #	print("node ", instance.val , " x_val ", instance.x_val)
 	
