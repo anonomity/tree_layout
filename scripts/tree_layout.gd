@@ -54,57 +54,61 @@ func _ready():
 	root.add_node(node2)
 	root.add_node(node3)
 	
-	create_layout(root,0)
+	create_layout(root)
 	apply_mod(root)
 
-func create_layout(tree , left_order):
+func create_layout(tree):
+	
 	
 
-#		tree.mod = (tree.children.size()  / 2) 
 		
 	for i in range(tree.children.size()):
 		
-		#if node has children 
+		#if node is a tree
 		if tree.children[i].children.size() > 0:
-			#if its not the leftmost node
+			
+			
+			#add a mod to separate the children
+			#if it has siblings to the left
 			if i > 0:
 				
-				tree.children[i].mod_children(tree.children[i].x_val / 2)
-				tree.children[i].inc_x_prelim(i)
-				#inc by the siblings prelim_x
-				tree.children[i].inc_sibling_prelim_x()
-#				
-			else:
-				print("i", i, " is not leftmost ", tree.children[i].val)
-				for child in tree.children:
-					child.mod = tree.children[i].children.size() / 2
+			
+				tree.children[i].add_sibling_x(tree, i)
+				tree.children[i].center_parent_mod()
+		
 				
-			create_layout(tree.children[i],i+1)
-				
-		# if node is childless :(
-		else:
-			if i > 0:
-				
-				tree.children[i].mod_children(tree.children[i].x_val / 2)
-				tree.children[i].inc_x_prelim(i)
-				#inc by the siblings prelim_x
-				tree.children[i].inc_sibling_prelim_x()
-			create_layout(tree.children[i],i+1)
+			if i == 0:
+				# centering children if the node is the leftmost child
+
+				var value : float = 0.0
+				for k in range(tree.children[i].children.size()):
+					value += tree.children[i].children[k].x_val
+				tree.children[i].x_val = value / 2
+	
+			
+		elif i > 0:
+			tree.children[i].add_sibling_x(tree, i)
+		create_layout(tree.children[i])	
+		# if node is a leaf
+	
 		
 	
 
 func apply_mod(tree):
-	if tree.row == 0:
-		tree.mod_with_account_of_children()
+	
 	
 	for i in range(tree.children.size()):
-		#if node has children
+		#if node is a tree
 		if tree.children[i].children.size() > 0:
+		
+			if tree.children[i].mod != 0:
+				tree.children[i].mod_children(tree.children[i].mod)
 			apply_mod(tree.children[i])
+			
 		# if node is childless :(
 		else:
 			apply_mod(tree.children[i])
-	
+			
 	
 	var node_tree = node.instance()
 
@@ -112,22 +116,24 @@ func apply_mod(tree):
 	
 	node_tree.init(tree.val, tree.x_val)
 	var row_y = calc_y(tree.row)
-	var x = calc_x(tree.x_val, tree.mod)
-#	print("placing ", tree.val, " here: (", x, ",",row_y,")" )
+	print("tree.val " , tree.val)
+	print("tree.x_val ", tree.x_val)
+	print("tree.mod ", tree.mod)
+	var x = calc_x(tree.x_val + 1, tree.parent_mod)
 	
 	node_tree.rect_global_position = Vector2(x  ,row_y)
 	
 
 
 func calc_x(ind, mod):
-	mod = mod * 64
-
-	var x
-	if ind == 0:
-		x = 64
+	#converting mod and ind to node size
+	if mod != null:
+		mod = mod * 64
 	else:
-		x = ind * 64
-	return x + mod
+		mod = 0
+	#64 is the size of each mode
+	ind = ind * 64
+	return ind + mod
 
 func calc_y(row):
 	var row_y = 64 + (76 * (row))

@@ -9,12 +9,12 @@ var children = []
 var row 
 var val
 var parent
-var x_val
-var mod = 0
-
+var x_val : float
+var mod :float
+var index :float = 0
 var id
 var rng = RandomNumberGenerator.new()
-
+var parent_mod : float = 0
 
 
 func _init(_row, _val, _parent):
@@ -28,49 +28,36 @@ func _init(_row, _val, _parent):
 	rng.randomize()
 	var my_random_number = rng.randf_range(0, 1000000)
 	var id = String(val) + String(int(my_random_number))
-	GlobalTreeVariable.init_rows(_row)
 
-
-func inc_sibling_prelim_x():
-	if x_val == 0:
-		return
-	else:
-		
-		for i in range(parent.children.size()):
-			if val == parent.children[i].val:
-				print("done ", parent.children[i].val ,", == ", val)
-				return
-			else:
-				print(parent.children[i].val, " has x val of ", parent.children[i].x_val)
-				print("inc ", val, " by ",parent.children[i].x_val, " with parent ", parent.val)
-#				print("sibling ", children[i].val, " inc ", children[i].x_val)
-				x_val += parent.children[i].x_val
-	
-func inc_x_prelim(ind):
-	print(val, "by ", ind)
-	x_val += ind		
-
-func mod_with_account_of_children():
+func mod_children(mod_val):
 	for child in children:
-		
-		mod += child.mod
-#	mod += children.size()/2
-	print("node ", val, " mod ", mod)
+		#if the node has children
+		if child.children.size() > 0:
+			
+			child.mod_children(mod_val)
+#		print("changing ", child.val, ": ", child.x_val , " to : ", child.x_val +mod_val)
+		child.parent_mod += mod_val
 
-func mod_children(mod_num):
-	for i in range(children.size()):
-		children[i].mod = mod_num
-		print("node ", children[i].val, " mod ", children[i].mod)
+func add_sibling_x(tree, ind):
 	
+	x_val += tree.children[ind - 1].x_val
+	print("adding ", tree.children[ind - 1].x_val , " to ", val," making it ", x_val)
+
+func center_parent_mod():
+	
+	var prelim_x = 0
+	for child in children:
+		prelim_x += child.x_val
+	mod = x_val - prelim_x/2
+
+	
+
 	
 func add_node(instance : Node_Tree):
-	
-	instance.x_val = GlobalTreeVariable.rows[instance.row]
-	var new_row = GlobalTreeVariable.inc_row(instance.row)
-	
-	
-#	print("node ", instance.val , " x_val ", instance.x_val)
-	
+	if children.size() > 1:
+		instance.x_val = 1
+	else:
+		instance.x_val = children.size()
 	children.append(instance)
 	
 
