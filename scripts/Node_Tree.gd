@@ -15,6 +15,8 @@ var index :float = 0
 var id
 var rng = RandomNumberGenerator.new()
 var parent_mod : float = 0
+var rightmost_padding = []
+var leftmost_padding = []
 
 
 func _init(_row, _val, _parent):
@@ -31,6 +33,7 @@ func _init(_row, _val, _parent):
 
 func mod_children(mod_val):
 	for child in children:
+		
 		#if the node has children
 		if child.children.size() > 0:
 			
@@ -41,7 +44,13 @@ func mod_children(mod_val):
 func add_sibling_x(tree, ind):
 	
 	x_val += tree.children[ind - 1].x_val
-	print("adding ", tree.children[ind - 1].x_val , " to ", val," making it ", x_val)
+#	print("adding ", tree.children[ind - 1].x_val , " to ", val," making it ", x_val)
+
+func delete_parent_mod():
+	for child in children:
+		if child.children.size() > 0:
+			child.delete_parent_mod()
+		child.parent_mod = 0
 
 func center_parent_mod():
 	
@@ -50,9 +59,21 @@ func center_parent_mod():
 		prelim_x += child.x_val
 	mod = x_val - prelim_x/2
 
-	
+func check_subtree_padding(leftmost_arr, rightmost_arr):
+	for i in range(children.size()):
+		if i ==0:
+			leftmost_arr.append(children[i].x_val + children[i].parent_mod)
+		elif i == (children.size() - 1):
+			rightmost_arr.append(children[i].x_val + children[i].parent_mod)
+		
+		if children[i].children.size() > 0:
+			children[i].check_subtree_padding(leftmost_arr,rightmost_arr)
 
-	
+func adjust_mod(new_mod):
+	mod += new_mod
+	x_val += new_mod
+	delete_parent_mod()
+
 func add_node(instance : Node_Tree):
 	if children.size() > 1:
 		instance.x_val = 1
