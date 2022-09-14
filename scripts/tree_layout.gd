@@ -35,29 +35,34 @@ func _ready():
 	var node15 = Node_Tree.new(3, "Q", node4)
 	var node17 = Node_Tree.new(3, "X", node4)
 	var node16 = Node_Tree.new(3, "Y", node5)
-	var node18 = Node_Tree.new(2, "Z", node2)
+	var node18 = Node_Tree.new(3, "Z", node6)
 	var node19 = Node_Tree.new(2, "V", node2)
 	var node20 = Node_Tree.new(3, "R", node6)
 	var node21 = Node_Tree.new(3, "U", node18)
+	var node22 = Node_Tree.new(2, "8", node2)
+	var node23 = Node_Tree.new(2, "9", node2)
 	
-	var nodes = [node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node14, node15, node16, node17, node18, node19, node20, node21]
+#	var nodes = [node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node14, node15, node16, node17, node18, node19, node20, node21, ]
 #	create_tree(root, nodes)
 #	node6.add_node(node21)
-	node18.add_node(node21)
+#	node18.add_node(node21)
 	# we start at the bottom most trees whose children are the leaves
 	# inificient way of doing it for the time being
-	node6.add_node(node20)
-#	node19.add_node(node21)
-#	node6.add_node(node21)
-	node2.add_node(node18)
-	node2.add_node(node19)
-	node4.add_node(node15)
-	node4.add_node(node17)
-	
+#	node6.add_node(node20)
+##	node19.add_node(node21)
+##	node6.add_node(node21)
+#	node2.add_node(node18)
+#	node2.add_node(node19)
+#	node4.add_node(node15)
+#	node4.add_node(node17)
+	node2.add_node(node23)
+	node2.add_node(node22)
 	node5.add_node(node8)
 #	node5.add_node(node9)
 	node5.add_node(node16)
 	
+	node6.add_node(node18)
+#	node6.add_node(node22)
 	node7.add_node(node10)
 	node7.add_node(node11)
 	node7.add_node(node12)
@@ -70,6 +75,7 @@ func _ready():
 	node3.add_node(node7)
 	
 	root.add_node(node1)
+#	root.add_node(node22)
 	root.add_node(node2)
 	root.add_node(node3)
 	
@@ -143,6 +149,7 @@ func apply_mod(tree):
 	
 	if tree.row == 0 and final == true:
 		tree.center_root()
+		
 	draw_tree(tree)
 	
 
@@ -185,14 +192,14 @@ func move_apex_roots_apart(tree):
 						var right_node_leftmost_padding = tree.children[j+(1+l)].leftmost_padding[k]
 						var left_node_rightmost_padding = tree.children[j].rightmost_padding[k]
 						if (right_node_leftmost_padding - left_node_rightmost_padding) < 1:
-								
-								var new_mod = right_node_leftmost_padding - left_node_rightmost_padding
-								new_mod = 1.5 - new_mod
-#								print("new mod for " , tree.children[j + (1+l)].val ," and it is ", new_mod, " from k = ", k)
-								
+								print("left node pos ", left_node_rightmost_padding, " right node pos ", right_node_leftmost_padding)
+								var new_mod = (right_node_leftmost_padding ) - left_node_rightmost_padding
+								new_mod = 1 -new_mod 
 								tree.children[j+(1+l)].pad_subtree(new_mod)
-#								tree.recalculate_children_separation(new_mod, tree)
-#								tree.children[j+(1+l)].center_parent_mod()
+
+#								tree.children[j+(1+l)].center_node_under_children()
+								tree.sibling_center_after_shift(new_mod, j,j+(1+l) )
+#								tree.center_parent_mod()
 								tree.children[j].center_parent_mod()
 	
 						

@@ -53,6 +53,19 @@ func delete_parent_mod():
 			child.delete_parent_mod()
 		child.parent_mod = 0
 
+func center_node_under_children():
+	var prelim_x = 0.0
+	if children.size() == 1:
+		x_val = children[0].x_val
+		return
+	else:
+		for i in range(children.size()):
+			if i ==0 or i == children.size()-1:
+				prelim_x += children[i].x_val + children[i].parent_mod
+		x_val =  x_val +  prelim_x /2
+		return x_val
+		print("NEW x_ VAL ", x_val)
+
 func center_root():
 	var prelim_x = 0
 	for i in range(children.size()):
@@ -62,12 +75,19 @@ func center_root():
 
 	x_val = abs(x_val - prelim_x/2)
 
-
+func sibling_center_after_shift(distance_shifted, child_index_1, child_index_2):
+	#how many nodes are in between conflicting nodes
+	var num_of_nodes_in_between = (child_index_2 - child_index_1) -1
+	var new_shift = distance_shifted / (num_of_nodes_in_between + 1)
+	for i in range(num_of_nodes_in_between):
+		children[child_index_1 + i + 1].x_val += new_shift
+	
 func center_parent_mod():
 	
 	var prelim_x = 0
-	for child in children:
-		prelim_x += child.x_val
+	for i in range(children.size()):
+		if i ==0 or i == children.size()-1:
+			prelim_x += children[i].x_val
 	mod = x_val - prelim_x/2
 
 # fills an array with the trees leftmost and rightmost child posisiotn
@@ -91,8 +111,10 @@ func recalculate_children_separation(separation, mama):
 			mama.children[i].x_val += shift_val
 
 func adjust_mod(new_mod):
+	print(val , " old x ", x_val)
 	mod += new_mod
 	x_val += new_mod
+	print(val , " new x ", x_val)
 	delete_parent_mod()
 	
 func delete_padding():
@@ -102,9 +124,13 @@ func delete_padding():
 		children[i].delete_padding()
 	
 
+
 func pad_subtree(new_mod):
+	print("mod ", new_mod)
+	print(val , " old x ", x_val)
 	mod += new_mod
 	x_val += new_mod
+	print(val , " new x ", x_val)
 
 	
 

@@ -9,6 +9,5 @@ script = ExtResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 384, 301 )
-current = true
 
 [node name="nodes" type="Node2D" parent="."]
