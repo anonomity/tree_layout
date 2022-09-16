@@ -55,8 +55,8 @@ func _ready():
 #	node2.add_node(node19)
 #	node4.add_node(node15)
 #	node4.add_node(node17)
-	node2.add_node(node23)
-	node2.add_node(node22)
+#	node2.add_node(node23)
+#	node2.add_node(node22)
 	node5.add_node(node8)
 #	node5.add_node(node9)
 	node5.add_node(node16)
@@ -196,11 +196,9 @@ func move_apex_roots_apart(tree):
 								var new_mod = (right_node_leftmost_padding ) - left_node_rightmost_padding
 								new_mod = 1 -new_mod 
 								tree.children[j+(1+l)].pad_subtree(new_mod)
-
-#								tree.children[j+(1+l)].center_node_under_children()
 								tree.sibling_center_after_shift(new_mod, j,j+(1+l) )
-#								tree.center_parent_mod()
-								tree.children[j].center_parent_mod()
+#							
+								
 	
 						
 		

@@ -77,10 +77,12 @@ func center_root():
 
 func sibling_center_after_shift(distance_shifted, child_index_1, child_index_2):
 	#how many nodes are in between conflicting nodes
+	
 	var num_of_nodes_in_between = (child_index_2 - child_index_1) -1
 	var new_shift = distance_shifted / (num_of_nodes_in_between + 1)
 	for i in range(num_of_nodes_in_between):
 		children[child_index_1 + i + 1].x_val += new_shift
+		children[child_index_1 + i + 1].mod += new_shift
 	
 func center_parent_mod():
 	
@@ -126,12 +128,10 @@ func delete_padding():
 
 
 func pad_subtree(new_mod):
-	print("mod ", new_mod)
-	print(val , " old x ", x_val)
 	mod += new_mod
 	x_val += new_mod
-	print(val , " new x ", x_val)
-
+	
+	
 	
 
 func add_node(instance : Node_Tree):
