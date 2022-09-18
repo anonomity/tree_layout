@@ -93,17 +93,61 @@ func center_parent_mod():
 	mod = x_val - prelim_x/2
 
 # fills an array with the trees leftmost and rightmost child posisiotn
-func check_subtree_padding(leftmost_arr, rightmost_arr):
+func check_subtree_padding(leftmost_arr, rightmost_arr, index):
 	for i in range(children.size()):
 		if i ==0:
-			leftmost_arr.append(children[i].x_val + children[i].parent_mod)
-			if (children.size()-1) == 0:
+			
+			if leftmost_arr.size() <=  index:
+			
+				
+				leftmost_arr.append(children[i].x_val + children[i].parent_mod)
+			else:
+			
+				print(leftmost_arr[index])
+				#we want smaller arr
+				if (children[i].x_val + children[i].parent_mod) < leftmost_arr[index]:
+					leftmost_arr[index] = (children[i].x_val + children[i].parent_mod)
+			var index_val = index
+			index_val +=1
+			
+			if children[i].children.size() > 0:
+				
+				children[i].check_subtree_padding(leftmost_arr,rightmost_arr, index_val)
+#			if (children.size()-1) == 0:
+#				rightmost_arr.append(children[i].x_val + children[i].parent_mod)
+		if i == (children.size() - 1):
+			
+			if rightmost_arr.size() <= index:
 				rightmost_arr.append(children[i].x_val + children[i].parent_mod)
-		elif i == (children.size() - 1):
-			rightmost_arr.append(children[i].x_val + children[i].parent_mod)
+			else:
+				print("were in ", val, "index val = ", index )
+				print("rightmost arr ", rightmost_arr)
+				if (children[i].x_val + children[i].parent_mod) > rightmost_arr[index]:
+					rightmost_arr[index] = (children[i].x_val + children[i].parent_mod)
+			var index_val = index
+			index_val +=1
+#			print("APPENDING ", children[i].x_val + children[i].parent_mod, "to ", val, "index: ", index_val)
+			if children[i].children.size() > 0:
+			
+				children[i].check_subtree_padding(leftmost_arr,rightmost_arr, index_val)
 		
-		if children[i].children.size() > 0:
-			children[i].check_subtree_padding(leftmost_arr,rightmost_arr)
+#		if children[i].children.size() > 0:
+#			children[i].check_subtree_padding(leftmost_arr,rightmost_arr)
+
+func pad_left_route(left_arr):
+	for i in range(children.size()):
+		if i == 0:
+			left_arr.append(children[i].x_val + children[i].parent_mod)
+			if children[i].children.size() > 0:
+				children[i].pad_left_route(left_arr)
+			
+
+func pad_right_route(right_arr):
+	for i in range(children.size()):
+		if i == (children.size()-1):
+			right_arr.append(children[i].x_val + children[i].parent_mod)
+			if children[i].children.size() > 0:
+				children[i].pad_right_route(right_arr)
 
 func recalculate_children_separation(separation, mama):
 	for i in range(mama.children.size()):
@@ -111,6 +155,10 @@ func recalculate_children_separation(separation, mama):
 		if i != 0 and i != mama.children.size()-1:
 			var shift_val = separation / (i + 1)
 			mama.children[i].x_val += shift_val
+
+func reset_padding():
+	delete_padding()
+	
 
 func adjust_mod(new_mod):
 	print(val , " old x ", x_val)
@@ -120,10 +168,13 @@ func adjust_mod(new_mod):
 	delete_parent_mod()
 	
 func delete_padding():
+	leftmost_padding = []
+	rightmost_padding= []
 	for i in range(children.size()):
-		leftmost_padding.clear()
-		rightmost_padding.clear()
-		children[i].delete_padding()
+		children[i].leftmost_padding = []
+		children[i].rightmost_padding = []
+		if children[i].children.size() > 0:
+			children[i].delete_padding()
 	
 
 

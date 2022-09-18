@@ -14,6 +14,7 @@ var height = 100
 var node_width 
 
 var final = false
+var roots 
 func _ready():
 	
 	#initializing the whole tree with row and val and parent
@@ -41,7 +42,11 @@ func _ready():
 	var node21 = Node_Tree.new(3, "U", node18)
 	var node22 = Node_Tree.new(2, "8", node2)
 	var node23 = Node_Tree.new(2, "9", node2)
-	
+	var node25 = Node_Tree.new(3, "6", node23)
+	var node26 = Node_Tree.new(3, "8a", node22)
+	var node27 = Node_Tree.new(3, "8b", node22)
+	var node28 = Node_Tree.new(3, "8c", node22)
+	roots= root
 #	var nodes = [node1, node2, node3, node4, node5, node6, node7, node8, node9, node10, node11, node12, node13, node14, node15, node16, node17, node18, node19, node20, node21, ]
 #	create_tree(root, nodes)
 #	node6.add_node(node21)
@@ -55,19 +60,25 @@ func _ready():
 #	node2.add_node(node19)
 #	node4.add_node(node15)
 #	node4.add_node(node17)
-#	node2.add_node(node23)
-#	node2.add_node(node22)
-	node5.add_node(node8)
-#	node5.add_node(node9)
-	node5.add_node(node16)
+
+#	node22.add_node(node26)
+#	node22.add_node(node27)
+#	node22.add_node(node28)
+	node2.add_node(node22)
+	node2.add_node(node23)
 	
+	node23.add_node(node25)
+	
+	node5.add_node(node8)
+	node5.add_node(node16)
+
 	node6.add_node(node18)
-#	node6.add_node(node22)
+#
 	node7.add_node(node10)
 	node7.add_node(node11)
 	node7.add_node(node12)
 	node7.add_node(node13)
-#	node7.add_node(node14)
+
 	node1.add_node(node4)
 	node1.add_node(node5)
 	
@@ -75,7 +86,7 @@ func _ready():
 	node3.add_node(node7)
 	
 	root.add_node(node1)
-#	root.add_node(node22)
+
 	root.add_node(node2)
 	root.add_node(node3)
 	
@@ -159,8 +170,7 @@ func check_subtree_conflicts(tree):
 	for i in range(tree.children.size()):
 		check_subtree_conflicts(tree.children[i])
 		if tree.children[i].children.size() > 0:
-
-			tree.children[i].check_subtree_padding(tree.children[i].leftmost_padding,tree.children[i].rightmost_padding )
+			tree.children[i].check_subtree_padding(tree.children[i].leftmost_padding,tree.children[i].rightmost_padding , 0)
 		
 		print(tree.children[i].val ," has padding of ", tree.children[i].leftmost_padding, " and ",tree.children[i].rightmost_padding)
 	
@@ -196,7 +206,11 @@ func move_apex_roots_apart(tree):
 								var new_mod = (right_node_leftmost_padding ) - left_node_rightmost_padding
 								new_mod = 1 -new_mod 
 								tree.children[j+(1+l)].pad_subtree(new_mod)
-								tree.sibling_center_after_shift(new_mod, j,j+(1+l) )
+								roots.reset_padding()
+								check_subtree_conflicts(roots)
+
+#								tree.children[j+(1+l)].center_parent_mod()
+#								tree.sibling_center_after_shift(new_mod, j,j+(1+l) )
 #							
 								
 	
