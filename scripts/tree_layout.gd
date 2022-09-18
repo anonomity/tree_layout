@@ -61,19 +61,20 @@ func _ready():
 #	node4.add_node(node15)
 #	node4.add_node(node17)
 
-#	node22.add_node(node26)
-#	node22.add_node(node27)
-#	node22.add_node(node28)
+	node22.add_node(node26)
+	node22.add_node(node27)
+	node22.add_node(node28)
+
 	node2.add_node(node22)
 	node2.add_node(node23)
 	
 	node23.add_node(node25)
-	
+
 	node5.add_node(node8)
 	node5.add_node(node16)
 
 	node6.add_node(node18)
-#
+
 	node7.add_node(node10)
 	node7.add_node(node11)
 	node7.add_node(node12)

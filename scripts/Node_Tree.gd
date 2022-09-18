@@ -134,20 +134,7 @@ func check_subtree_padding(leftmost_arr, rightmost_arr, index):
 #		if children[i].children.size() > 0:
 #			children[i].check_subtree_padding(leftmost_arr,rightmost_arr)
 
-func pad_left_route(left_arr):
-	for i in range(children.size()):
-		if i == 0:
-			left_arr.append(children[i].x_val + children[i].parent_mod)
-			if children[i].children.size() > 0:
-				children[i].pad_left_route(left_arr)
-			
 
-func pad_right_route(right_arr):
-	for i in range(children.size()):
-		if i == (children.size()-1):
-			right_arr.append(children[i].x_val + children[i].parent_mod)
-			if children[i].children.size() > 0:
-				children[i].pad_right_route(right_arr)
 
 func recalculate_children_separation(separation, mama):
 	for i in range(mama.children.size()):
@@ -180,7 +167,8 @@ func delete_padding():
 
 func pad_subtree(new_mod):
 	mod += new_mod
-	x_val += new_mod
+	x_val += new_mod 
+	mod_children(new_mod)
 	
 	
 	
